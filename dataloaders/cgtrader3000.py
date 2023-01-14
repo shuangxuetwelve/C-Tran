@@ -1,11 +1,12 @@
 import os
+import random
 import numpy as np
 import torch
 from PIL import Image
 import dataloaders.data_utils
 
 class CGTrader3000Dataset(torch.utils.data.Dataset):
-    def __init__(self, img_dir='./data/cgtrader/cgtrader-3000/images', tag_file='./data/cgtrader/cgtrader-3000/tags_needed.txt', label_file='./data/cgtrader/cgtrader-3000/data.csv', image_transform=None, num_known_labels=0, testing=False):
+    def __init__(self, img_dir='./data/cgtrader/cgtrader-3000/images', tag_file='./data/cgtrader/cgtrader-3000/tags_needed.txt', label_file='./data/cgtrader/cgtrader-3000/data.csv', image_transform=None, num_known_labels=0, testing=False, training_ratio=0.95):
         self.img_dir = img_dir
         self.image_transform = image_transform
         self.num_known_labels = num_known_labels
@@ -28,7 +29,13 @@ class CGTrader3000Dataset(torch.utils.data.Dataset):
         with open(label_file) as file:
             lines = file.read().split('\n')
             lines = lines[1:-1]
-            self.img_names = [line.split(',')[1] for line in lines]
+            random.shuffle(lines)
+            num_samples = len(lines)
+            num_samples_training = int(num_samples * training_ratio)
+            if testing:
+                lines = lines[num_samples_training:]
+            else:
+                lines = lines[0:num_samples_training]
             for line in lines:
                 _, image_filename, tag_string, _ = line.split(',')
                 self.img_names.append(image_filename)

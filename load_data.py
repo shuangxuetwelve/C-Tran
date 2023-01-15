@@ -11,6 +11,7 @@ from dataloaders.coco80_dataset import Coco80Dataset
 from dataloaders.news500_dataset import NewsDataset
 from dataloaders.coco1000_dataset import Coco1000Dataset
 from dataloaders.cub312_dataset import CUBDataset
+from dataloaders.cgtrader3000 import CGTrader3000Dataset
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -143,6 +144,18 @@ def get_data(args):
             labels_path=anno_dir,
             known_labels=args.test_known_labels,
             testing=True)
+
+    elif dataset == 'cgtrader-3000':
+        train_dataset = CGTrader3000Dataset(
+            image_transform=trainTransform,
+            num_known_labels=args.train_known_labels,
+            testing=False,
+        )
+        valid_dataset = CGTrader3000Dataset(
+            image_transform=testTransform,
+            num_known_labels=args.test_known_labels,
+            testing=True
+        )
 
     elif dataset == 'cub':
         drop_last=True

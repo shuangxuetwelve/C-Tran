@@ -70,6 +70,7 @@ def compose_image_transformations():
 def load_saved_model(saved_model_name,model):
     checkpoint = torch.load(saved_model_name)
     model.load_state_dict(checkpoint['state_dict'])
+    model.eval()
     return model
 
 def get_largest_from_dict(dict):

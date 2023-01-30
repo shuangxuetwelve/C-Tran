@@ -8,7 +8,7 @@ use_lmt = True
 pos_emb = False
 layers = 3
 heads = 4
-dropout = 0.1
+dropout = 0.0
 no_x_features = False
 image_scale_size = 576
 num_labels = 1000
@@ -35,6 +35,7 @@ def generate_tags():
     model = CTranModel(num_labels, use_lmt, pos_emb, layers, heads, dropout, no_x_features)
     model = model.cuda()
     model = load_saved_model("results/cgtrader-3000.3layer.bsz_16.adam1e-05.lmt.unk_loss/best_model.pt", model)
+    model.eval()
 
     # Predict.
     pred, int_pred, attns = model(images.cuda(), masks.cuda())

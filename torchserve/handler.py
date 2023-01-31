@@ -19,6 +19,4 @@ class Handler(ts.torch_handler.vision_handler.VisionHandler):
     def postprocess(self, data):
         confidences = torch.sigmoid(data)
         probs, classes = torch.topk(confidences, self.topk, dim=1)
-        print(probs) # tensor([[0.9995, 0.9862, 0.9412, 0.6772, 0.0021]], device='cuda:0')
-        print(classes) # tensor([[14,  4, 10,  8, 13]], device='cuda:0')
         return ts.utils.util.map_class_to_label(probs.tolist(), self.mapping, classes.tolist())

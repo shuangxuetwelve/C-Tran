@@ -6,7 +6,7 @@ from CTran import CTranModel
 
 class Model(CTranModel):
     
-    num_labels = 20
+    num_labels = 1000
     use_lmt = True
     dropout = 0
 
